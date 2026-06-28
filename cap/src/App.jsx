@@ -4,13 +4,14 @@ import "./App.css";
 function App() {
   const [cat, setCat] = useState(null);
   const [banList, setBanList] = useState([]);
+  const [message, setMessage] = useState("");
 
   const getCat = async () => {
-    let foundCat = null;
+    setMessage("");
 
-    for (let i = 0; i < 10; i++) {
+    try {
       const response = await fetch(
-        "https://api.thecatapi.com/v1/images/search?has_breeds=1&limit=1",
+        "https://api.thecatapi.com/v1/images/search?has_breeds=1&limit=10",
         {
           headers: {
             "x-api-key": import.meta.env.VITE_CAT_API_KEY,
@@ -18,33 +19,49 @@ function App() {
         },
       );
 
+      if (!response.ok) {
+        throw new Error("API request failed");
+      }
+
       const data = await response.json();
-      const result = data[0];
 
-      if (!result || !result.breeds || result.breeds.length === 0) {
-        continue;
+      const cats = data
+        .filter((result) => result.breeds && result.breeds.length > 0)
+        .map((result) => {
+          const breed = result.breeds[0];
+
+          return {
+            image: result.url,
+            breed: breed.name,
+            origin: breed.origin,
+            temperament: breed.temperament.split(",")[0],
+          };
+        });
+
+      const allowedCats = cats.filter(
+        (catInfo) =>
+          !banList.includes(catInfo.breed) &&
+          !banList.includes(catInfo.origin) &&
+          !banList.includes(catInfo.temperament),
+      );
+
+      if (allowedCats.length === 0) {
+        setCat(null);
+        setMessage(
+          "No cats found that are not banned. Try removing something from the ban list.",
+        );
+        return;
       }
 
-      const breed = result.breeds[0];
+      const randomCat =
+        allowedCats[Math.floor(Math.random() * allowedCats.length)];
 
-      const catInfo = {
-        image: result.url,
-        breed: breed.name,
-        origin: breed.origin,
-        temperament: breed.temperament.split(",")[0],
-      };
-
-      if (
-        !banList.includes(catInfo.breed) &&
-        !banList.includes(catInfo.origin) &&
-        !banList.includes(catInfo.temperament)
-      ) {
-        foundCat = catInfo;
-        break;
-      }
+      setCat(randomCat);
+    } catch (error) {
+      setCat(null);
+      setMessage("Something went wrong. Please try again.");
+      console.log(error);
     }
-
-    setCat(foundCat);
   };
 
   const addToBanList = (value) => {
@@ -63,6 +80,8 @@ function App() {
       <p>Click discover to find a random cat breed.</p>
 
       <button onClick={getCat}>Discover Cat</button>
+
+      {message && <p className="message">{message}</p>}
 
       {cat && (
         <div className="cat-card">
