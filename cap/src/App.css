@@ -49,3 +49,8 @@ button:hover {
   padding: 15px;
   border-radius: 12px;
 }
+
+.message {
+  color: red;
+  font-weight: bold;
+}
