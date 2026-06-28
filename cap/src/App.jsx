@@ -20,6 +20,11 @@ function App() {
 
       const data = await response.json();
       const result = data[0];
+
+      if (!result || !result.breeds || result.breeds.length === 0) {
+        continue;
+      }
+
       const breed = result.breeds[0];
 
       const catInfo = {
