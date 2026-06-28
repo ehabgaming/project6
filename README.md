@@ -1,4 +1,4 @@
-# Web Development Project 4 - cat project 6
+# Web Development Project 4 - Discover catttsss
 
 Submitted by: ehab othman
 
@@ -44,9 +44,9 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='[http://i.imgur.com/link/to/your/gif/file.gif](https://imgur.com/a/ZcYECmE)' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://imgur.com/a/HxVP2CS' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-https://i.imgur.com/W1L495U.mp4
+[https://i.imgur.com/W1L495U.mp4](https://imgur.com/a/HxVP2CS)
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with windows snapping tool 
 <!-- Recommended tools:
